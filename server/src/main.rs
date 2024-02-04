@@ -3,6 +3,7 @@ use serde::Deserialize;
 use tokio::net::TcpStream;
 use tokio::io::copy_bidirectional;
 use std::env;
+use tokio::time::{sleep, Duration};
 
 #[derive(Deserialize)]
 struct Data {
@@ -15,6 +16,7 @@ async fn connect_handler(req: HttpRequest, json_data: web::Json<Data>) -> impl R
     let mut client_stream = TcpStream::connect(addr).await.unwrap();
     match env::var("MINECRAFT_SERVER") {
         Ok(minecraft_ip) => {
+            sleep(Duration::from_secs(5)).await;
             let mut minecraft_stream = TcpStream::connect(minecraft_ip).await.unwrap();
             copy_bidirectional(&mut client_stream, &mut minecraft_stream).await.unwrap();
             "Done"
