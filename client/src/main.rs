@@ -22,7 +22,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let port = mc_listener.local_addr().unwrap().port();
 
     let client = Client::builder().timeout(Duration::from_secs(1)).build()?;
-    let _ = client.post(format!("http://{}/connect", args[1]))
+    let _ = client.post(format!("{}/connect", args[1]))
         .json(&json!({"port": port}))
         .send()
         .await;
