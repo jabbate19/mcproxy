@@ -1,19 +1,8 @@
-FROM rust:latest
+FROM rust:1.67
 
-WORKDIR /app
+WORKDIR /usr/src/app
+COPY . .
 
-RUN apt-get update && apt-get -y install libssl-dev pkg-config libglib2.0-dev
+RUN cargo install --path .
 
-RUN cargo init .
-
-COPY Cargo.* ./
-
-RUN cargo build --release
-
-RUN rm src/*.rs
-
-COPY src/ src/
-
-RUN cargo build --release
-
-CMD ["./target/release/mcproxy-server"]
+CMD ["mcproxy-server"]
