@@ -8,8 +8,8 @@ use std::env;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args: Vec<String> = env::args().collect();
-    if args.len() != 2 {
-        println!("Usage: {} <http api ip/port>", args[0]);
+    if args.len() != 3 {
+        println!("Usage: {} <public ip> <http api ip/port>", args[0]);
         return Ok(());
     }
 
@@ -22,8 +22,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let port = mc_listener.local_addr().unwrap().port();
 
     let client = Client::builder().timeout(Duration::from_secs(1)).build()?;
-    let _ = client.post(format!("{}/connect", args[1]))
-        .json(&json!({"port": port}))
+    let _ = client.post(format!("{}/connect", args[2]))
+        .json(&json!({
+            "ip": args[1],
+            "port": port
+        }))
         .send()
         .await;
     let mut mc_socket = mc_listener.accept().await?.0;

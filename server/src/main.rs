@@ -7,12 +7,13 @@ use tokio::time::{sleep, Duration};
 
 #[derive(Deserialize)]
 struct Data {
+    ip: String,
     port: i32,
 }
 
 async fn connect_handler(req: HttpRequest, json_data: web::Json<Data>) -> impl Responder {
     let port = json_data.port;
-    let addr = format!("{}:{}", req.connection_info().peer_addr().unwrap(), port);
+    let addr = format!("{}:{}", string, port);
     let mut client_stream = TcpStream::connect(addr).await.unwrap();
     match env::var("MINECRAFT_SERVER") {
         Ok(minecraft_ip) => {
