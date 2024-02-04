@@ -10,6 +10,8 @@ COPY Cargo.* ./
 
 RUN cargo build --release
 
+RUN rm src/*.rs
+
 COPY src/ src/
 
 RUN cargo build --release
