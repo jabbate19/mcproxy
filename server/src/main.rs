@@ -12,8 +12,9 @@ struct Data {
 }
 
 async fn connect_handler(req: HttpRequest, json_data: web::Json<Data>) -> impl Responder {
+    let ip = json_data.ip.clone();
     let port = json_data.port;
-    let addr = format!("{}:{}", string, port);
+    let addr = format!("{}:{}", ip, port);
     let mut client_stream = TcpStream::connect(addr).await.unwrap();
     match env::var("MINECRAFT_SERVER") {
         Ok(minecraft_ip) => {
