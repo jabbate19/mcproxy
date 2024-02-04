@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let listener = TcpListener::bind("127.0.0.1:8080").await?;
-    println!("Waiting on 127.0.0.1:8080")
+    println!("Waiting on 127.0.0.1:8080");
     let mut socket = listener.accept().await?.0;
 
     let mc_listener = TcpListener::bind("0.0.0.0:0").await?;
